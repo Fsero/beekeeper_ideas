@@ -4,3 +4,6 @@
 [submodule "ideas/whosthere"]
 	path = ideas/whosthere
 	url = https://github.com/FiloSottile/whosthere.git
+[submodule "ideas/dockerpot"]
+	path = ideas/dockerpot
+	url = https://github.com/mrschyte/dockerpot.git
