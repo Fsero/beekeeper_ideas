@@ -1,0 +1,6 @@
+[submodule "ideas/cowrie"]
+	path = ideas/cowrie
+	url = https://github.com/micheloosterhof/cowrie
+[submodule "ideas/whosthere"]
+	path = ideas/whosthere
+	url = https://github.com/FiloSottile/whosthere.git
