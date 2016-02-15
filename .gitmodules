@@ -7,3 +7,15 @@
 [submodule "ideas/dockerpot"]
 	path = ideas/dockerpot
 	url = https://github.com/mrschyte/dockerpot.git
+[submodule "ideas/atrace"]
+	path = ideas/atrace
+	url = https://github.com/apuigsech/atrace.git
+[submodule "ideas/libaudit-go"]
+	path = ideas/libaudit-go
+	url = https://github.com/mozilla/libaudit-go.git
+[submodule "ideas/syscallinfo"]
+	path = ideas/syscallinfo
+	url = https://github.com/jroimartin/syscallinfo
+[submodule "ideas/netlink"]
+	path = ideas/netlink
+	url = https://github.com/apuigsech/netlink
