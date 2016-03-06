@@ -19,3 +19,6 @@
 [submodule "ideas/netlink"]
 	path = ideas/netlink
 	url = https://github.com/apuigsech/netlink
+[submodule "ideas/Audit-Go"]
+	path = ideas/Audit-Go
+	url = https://github.com/AALEKH/Audit-Go.git
