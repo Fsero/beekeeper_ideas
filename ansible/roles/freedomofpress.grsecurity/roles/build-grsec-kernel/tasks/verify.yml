@@ -1,0 +1,46 @@
+---
+- name: Extract Linux tarball (.xz -> .tar).
+  # Can't use the `unarchive` module here, because it destroys
+  # the intermediary .tar file, which we need to verify the GPG sig.
+  command: >
+    xz --decompress {{ grsecurity_build_download_directory }}/{{ linux_tarball_xz_filename }}
+  args:
+    creates: "{{ grsecurity_build_download_directory }}/{{ linux_tarball_filename }}"
+
+  # From the gpg manpage for the --verify option:
+  #
+  #   With  more than 1 argument, the first should be a detached signature
+  #   and the remaining files ake [sic] up the the signed data.
+  #
+  # Therefore we must provide two arguments to the gpg command to ensure verification,
+  # the first being the detached signature file and the second being the file whose
+  # integrity we wish to verify.
+- name: Verify Linux tarball GPG signature.
+  command: >
+    gpg --verify
+    {{ grsecurity_build_download_directory }}/{{ linux_tarball_signature_filename }}
+    {{ grsecurity_build_download_directory }}/{{ linux_tarball_filename }}
+  changed_when: false
+
+  # As above, use the two-arg format when calling `gpg --verify`.
+- name: Verify grsecurity patch GPG signature.
+  command: >
+    gpg --verify
+    {{ grsecurity_build_download_directory }}/{{ grsecurity_signature_filename }}
+    {{ grsecurity_build_download_directory }}/{{ grsecurity_patch_filename }}
+  changed_when: false
+
+- name: Register current release tag for Ubuntu overlay.
+  command: git tag
+  args:
+    chdir: "{{ grsecurity_build_download_directory }}/ubuntu-trusty"
+  register: ubuntu_overlay_tag_result
+  changed_when: false
+  when: grsecurity_build_include_ubuntu_overlay == true
+
+- name: Verify Ubuntu overlay signature.
+  command: git tag --verify {{ ubuntu_overlay_tag_result.stdout }}
+  args:
+    chdir: "{{ grsecurity_build_download_directory }}/ubuntu-trusty"
+  changed_when: false
+  when: grsecurity_build_include_ubuntu_overlay == true

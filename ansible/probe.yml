@@ -1,0 +1,8 @@
+- hosts: 'sinkers'
+  roles:
+    - role: 'ansible-docker'
+      sudo: true
+
+- hosts: 'grsec-build'
+  roles:
+     - role: 'freedomofpress.grsecurity/roles/build-grsec-kernel'

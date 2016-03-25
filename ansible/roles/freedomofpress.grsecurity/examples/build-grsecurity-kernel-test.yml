@@ -1,0 +1,7 @@
+---
+- name: Build Linux kernel with grsecurity test patches.
+  hosts: grsec-build
+  roles:
+    - role: build-grsec-kernel
+      grsecurity_build_patch_type: test
+      tags: kernel

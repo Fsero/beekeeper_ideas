@@ -1,0 +1,3 @@
+- hosts: 'grsec_build'
+  roles:
+     - role: 'freedomofpress.grsecurity/roles/build-grsec-kernel'
