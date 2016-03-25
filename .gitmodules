@@ -1,24 +1,39 @@
 [submodule "ideas/cowrie"]
-	path = ideas/cowrie
+	path = ideas/ssh/cowrie
 	url = https://github.com/micheloosterhof/cowrie
 [submodule "ideas/whosthere"]
-	path = ideas/whosthere
+	path = ideas/ssh/whosthere
 	url = https://github.com/FiloSottile/whosthere.git
 [submodule "ideas/dockerpot"]
-	path = ideas/dockerpot
+	path = ideas/ssh/dockerpot
 	url = https://github.com/mrschyte/dockerpot.git
 [submodule "ideas/atrace"]
-	path = ideas/atrace
+	path = ideas/audit/atrace
 	url = https://github.com/apuigsech/atrace.git
 [submodule "ideas/libaudit-go"]
-	path = ideas/libaudit-go
+	path = ideas/audit/libaudit-go
 	url = https://github.com/mozilla/libaudit-go.git
 [submodule "ideas/syscallinfo"]
-	path = ideas/syscallinfo
+	path = ideas/audit/syscallinfo
 	url = https://github.com/jroimartin/syscallinfo
 [submodule "ideas/netlink"]
-	path = ideas/netlink
+	path = ideas/audit/netlink
 	url = https://github.com/apuigsech/netlink
 [submodule "ideas/Audit-Go"]
 	path = ideas/Audit-Go
 	url = https://github.com/AALEKH/Audit-Go.git
+[submodule "ideas/gnlpy"]
+	path = ideas/audit/gnlpy
+	url = https://github.com/facebook/gnlpy.git
+[submodule "ideas/tyk_quickstart"]
+	path = ideas/others/tyk_quickstart
+	url = http://github.com/yoanisgil/tyk_quickstart.git
+[submodule "ideas/compose-dynamic-es-cluster"]
+	path = ideas/elasticsearch/compose-dynamic-es-cluster
+	url = https://github.com/etiennepeiniau/compose-dynamic-es-cluster.git
+[submodule "ideas/es-demo-cluster"]
+	path = ideas/elasticsearch/es-demo-cluster
+	url = https://github.com/mcascallares/es-demo-cluster.git
+[submodule "ideas/audit/sysdig"]
+	path = ideas/audit/sysdig
+	url = https://github.com/draios/sysdig.git
