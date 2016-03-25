@@ -1,2 +1,4 @@
 .idea
-*.swp
+*.sw*
+.vagrant
+*.retry
