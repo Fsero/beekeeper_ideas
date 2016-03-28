@@ -1,3 +1,10 @@
 - hosts: 'grsec_build'
+  pre_tasks:
+    - include: tasks/install_latest_pip.yml
   roles:
      - role: 'freedomofpress.grsecurity/roles/build-grsec-kernel'
+       grsecurity_build_patch_type: test
+       linux_kernel_version: 3.16.7-ckt20
+       tags: kernel
+     - role: 'freedomofpress.grsecurity/roles/build-grsec-metapackage'
+       tags: meta

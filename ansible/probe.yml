@@ -1,8 +1,16 @@
 - hosts: 'sinkers'
   roles:
-    - role: 'ansible-docker'
-      sudo: true
-
-- hosts: 'grsec-build'
-  roles:
-     - role: 'freedomofpress.grsecurity/roles/build-grsec-kernel'
+      - { role: ansible-docker, become: true, when: ansible_os_family == 'Debian' }
+      #- { role: freedomofpress.grsecurity/roles/install-grsec-kernel,
+      #  become: true,
+      #  when: ansible_os_family == 'Debian',
+      #  grsecurity_install_deb_package: files/linux-image-4.4.6-grsec_4.4.6-grsec-10.00.Custom_amd64.deb }
+            
+  pre_tasks:
+     - include: tasks/install_latest_pip.yml    
+       when: ansible_os_family == "Debian"
+  
+  post_tasks:
+  
+     - include: tasks/install_sysdig.yml
+       when: ansible_os_family == "Debian"
