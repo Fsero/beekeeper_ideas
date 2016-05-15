@@ -1,0 +1,63 @@
+Objetivo
+
+Construir una API que de feeds de inteligencia usando una honeypot construida adhoc.
+
+Ambito
+
+el ambito del proyecto es construir el MVP, por lo que no se extendera hasta obtener el code complete.
+
+Partes
+
+sonda, obtiene la informacion de la maquina y la envia al colector, debe tener suficientes medidas
+de seguridad como para impedir que el atacante escape.
+
+Colector, recibe la informacion de varias sondas y debe tener medidas de seguridad para no exponer
+el backend.
+
+backend api, consume los datos del colector y genera feeds de inteligencia y los expone usando
+una API.
+
+Construccion de la sonda.
+
+Obtencion de datos,
+
+El concepto de base es escuchar las llamadas al sistema, por diseno del sistema operativo
+toda aplicacion cuando quiere interactuar con el sistema hace una llamada al sistema que le
+permite realizar la accion deseada como crear un nuevo proceso, leer un fichero etc.
+
+El objetivo de la sonda es obtener informacion de estos eventos de otros procesos, tradicionalmente
+esto se puede conseguir de varias maneras.
+
+* Lanzar un proceso tracer que mediante la syscall ptrace pueda instrumentar el procesom trazado.
+* Utilizar el subsistema auditd que da esta informacion del nucleo.
+* Emular la aplicacion que queremos instrumentar para que envie eventos.
+
+
+Securizacion y aislamiento,
+
+una honeypot por definicion es un sistema inseguro al que permitimos entrar un atacante para
+aprender sus metodos, por lo tanto debe cumplir con dos objetivos.
+
+* Actuar lo mas cercano posible a un sistema no aislado o real.
+* Impedir que el atacante pueda escapar del aislamiento o atacar a otros sistemas.
+
+Securizacion del servidor
+
+* grsec,
+* apparmor
+* SELinux
+* seccomp
+
+El aislamiento se puede conseguir utilizando:
+
+* maquinas virtuales.
+* chroot
+* containers
+
+
+
+Envio de datos:
+
+* proceso local que envia a colector
+* syslog que envia fichero y luego proceso local en colectar procesa ficheros hacia la cola.
+  GoLang syslog? RabbitMQ? Kafka?

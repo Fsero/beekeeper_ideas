@@ -185,6 +185,7 @@ func putJsonInElastic(trace *Trace, service *elastic.BulkProcessor) {
 
 	service.Add(r)
 
+
 }
 
 func dealWithFiles(files chan os.FileInfo, service *elastic.BulkProcessor) {
@@ -207,7 +208,7 @@ func main() {
 
 	files, _ := ioutil.ReadDir("./data/srv/capture/")
 	chanFiles := make(chan os.FileInfo)
-	elastic.SetURL("http://localhost:9200")
+	elastic.SetURL("http://172.17.0.10:9200")
 	client, err := elastic.NewClient()
 	createIndexIfNotExists(client)
 	if err != nil {
@@ -216,21 +217,17 @@ func main() {
 	// Setup a bulk processor
 	service, err := client.BulkProcessor().
 	Name("TracesUploader").
-	Workers(2).
+	Workers(10).
 	BulkActions(1000).              // commit if # requests >= 1000
 	BulkSize(2 << 20).              // commit if size of requests >= 2 MB
 	FlushInterval(30*time.Second).  // commit every 30s
 	Do()
-
-
 	if err != nil { panic(err) }
-
 	var MAX_WORKERS = 1
 	for w := 0; w < MAX_WORKERS; w++ {
 		go dealWithFiles(chanFiles, service)
 
 	}
-
 	for _, f := range files {
 		fmt.Println("sending file ")
 		chanFiles <- f
