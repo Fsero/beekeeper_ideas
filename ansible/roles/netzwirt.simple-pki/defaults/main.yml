@@ -9,7 +9,7 @@ simplepki_server_certs: []
 # revocation list
 simplepki_revocation_list: []
 
-# DN settings  
+# DN settings
 simplepki_domainComponent_tld: "com"
 simplepki_domainComponent_domain: "example"
 simplepki_organizationName: "Example Company Inc"
@@ -22,3 +22,5 @@ simplepki_key_size: "2048"
 simplepki_fetch_pki_users: false
 simplepki_fetch_pki_ca: false
 simplepki_fetch_pki_servers: false
+simplepki_dest_dir: "{{ inventory_dir }}/../secret"
+
