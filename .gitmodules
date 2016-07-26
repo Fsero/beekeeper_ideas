@@ -37,3 +37,6 @@
 [submodule "ideas/audit/sysdig"]
 	path = ideas/audit/sysdig
 	url = https://github.com/draios/sysdig.git
+[submodule "ideas/audit/falco"]
+	path = ideas/audit/falco
+	url = https://github.com/draios/falco.git

@@ -1,6 +1,21 @@
 - hosts: 'sinkers'
   roles:
       - { role: ansible-docker, become: true, when: ansible_os_family == 'Debian' }
+      - role: debops.rsyslog
+        rsyslog__capabilities: ['tls']
+        rsyslog__forward: [ '*.* @@192.168.33.11:6514' ]
+        become: true
+        when: ansible_os_family == 'Debian'
+      - role: debops.core
+        tags: [ 'role::core' ]
+        become: True
+      - role: debops.secret
+        tags: [ 'role::secret', 'role::pki', 'role::pki:secret' ]
+        secret_directories:
+          - '{{ pki_env_secret_directories }}'
+
+      - role: debops.pki
+        tags: [ 'role::pki', 'role::pki:secret', 'role::secret' ]
       #- { role: freedomofpress.grsecurity/roles/install-grsec-kernel,
       #  become: true,
       #  when: ansible_os_family == 'Debian',
