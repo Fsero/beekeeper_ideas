@@ -2,3 +2,4 @@
 *.sw*
 .vagrant
 *.retry
+ansible/secret/*
