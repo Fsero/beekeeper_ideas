@@ -2,7 +2,6 @@
 
 # certificate requests
 simplepki_user_certs: []
-simplepki_server_certs: []
 
 # revocation list
 simplepki_revocation_list: []
@@ -22,3 +21,11 @@ simplepki_fetch_pki_ca: true
 simplepki_fetch_pki_servers: true
 simplepki_dest_dir: "{{ inventory_dir }}/../secret"
 simplepki_server_certs: [ { fqdn: 'srv01.superprivyhosting.com' }, { fqdn: 'srv02.superprivyhosting.com' }, { fqdn: 'main01.superprivyhosting.com' } ]
+
+rsyslog_rsyslog_enable_tls: true
+rsyslog_rsyslog_tls_ca_path: "/etc/ssl/certs/chained-ca.sha256.4096.crt"
+rsyslog_rsyslog_tls_cert_path: "/etc/ssl/certs/main01.superprivyhosting.com.sha256.4096.crt"
+rsyslog_rsyslog_tls_key_path: "/etc/ssl/private/main01.superprivyhosting.com.sha256.4096.key"
+
+rsyslog_rsyslog_tls_server: true
+rsyslog_rsyslog_tls_server_accepted_domains: ["*.superprivyhosting.com"]
