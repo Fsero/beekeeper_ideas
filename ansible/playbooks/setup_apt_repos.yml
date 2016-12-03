@@ -1,0 +1,7 @@
+- hosts: all
+  roles:
+    - role: ansible-apt
+      apt_repo:
+        - repo_url: "deb http://download.draios.com/stable/deb stable-{{ ansible_distribution | lower }}-{{ ansible_distribution_release }} main"
+          key_url: "https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public"
+          key_id: "EC51E8C4"

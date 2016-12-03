@@ -1,8 +1,7 @@
-FROM krlmlr/debian-ssh
+FROM ansible_test_base
 ENV PASSWORD_GENERATED 123456
-RUN echo "docker:$PASSWORD_GENERATED" | chpasswd
+RUN echo "root:$PASSWORD_GENERATED" | chpasswd
 RUN unset PASSWORD_GENERATED
-RUN apt-get -y install auditd
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod a+x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

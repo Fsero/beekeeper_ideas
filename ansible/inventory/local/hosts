@@ -1,5 +1,12 @@
 [sinkers]
+#172.17.0.3 ansible_user=root  hostname=srv01
 192.168.33.10 ansible_user=vagrant ansible_become=true hostname=srv01
 
 [pki]
+#172.17.0.2 ansible_user=root hostname=main01
+192.168.33.11 ansible_user=vagrant ansible_become=true hostname=main01
+
+
+[collector]
+#172.17.0.2 ansible_user=root hostname=main01
 192.168.33.11 ansible_user=vagrant ansible_become=true hostname=main01

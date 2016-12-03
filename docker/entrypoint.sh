@@ -1,3 +1,2 @@
-#!/bin/bash
-
-/usr/sbin/sshd -D
+#!/usr/bin/env bash
+/etc/init.d/ssh start && bash

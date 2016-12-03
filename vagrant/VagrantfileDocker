@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+
+
+Vagrant.configure(2) do |config|
+
+
+   config.ssh.username = "root"
+   config.ssh.private_key_path = "/home/fsero/.ssh/id_rsa"
+
+
+   config.vm.define "sinker" do |v|
+       v.vm.provider "docker" do |d|
+           d.build_dir = "/home/fsero/repos/b/pfc/vagrant"
+           d.build_args = ["-t", "sinker"]
+           d.name = "sinker"
+           d.remains_running = false
+           d.create_args = ["-it", "--privileged", "-d"]
+           d.has_ssh = true
+       end
+   end
+
+   config.vm.define "main" do |v|
+       v.vm.provider "docker" do |d|
+           d.build_dir = "/home/fsero/repos/b/pfc/vagrant"
+           d.build_args = ["-t", "main"]
+           d.name = "main"
+           d.remains_running = false
+           d.create_args = ["-it", "--privileged", "-d"]
+           d.has_ssh = true
+       end
+   end
+
+end

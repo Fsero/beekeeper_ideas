@@ -12,4 +12,4 @@ rsyslog_rsyslog_d_files:
             "$ActionQueueFileName srvrfwd # set file name, also enables disk mode",
             "$ActionResumeRetryCount -1 # infinite retries on insert failure",
             "$ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down",
-            "*.* @@192.168.33.11:10514"]
+            "*.* @@{{hostvars.pki.ansible_ssh_host}}:10514"]

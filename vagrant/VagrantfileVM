@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+
+$script = <<SCRIPT
+	  sudo apt-get -y install python-setuptools
+	  sudo apt-get -y update
+	  sudo apt-get -y update
+	  sudo apt-get -y install python-dev
+	  sudo apt-get -y install libffi-dev
+	  sudo apt-get -y install build-essential
+	  sudo apt-get -y install libssl-dev
+	  sudo easy_install pip
+	  sudo pip install ansible
+	  #   sudo apt-get update
+	  #   sudo apt-get install -y apache2
+SCRIPT
+
+Vagrant.configure(2) do |config|
+	config.vm.provider "virtualbox" do |v|
+	  v.memory = 2048
+	  v.cpus = 2
+	end	
+     config.vm.define "sinker" do |sinker|
+	  sinker.vm.box = "kaorimatz/debian-8.3-amd64"
+	  sinker.vm.network "private_network", ip: "192.168.33.10"
+	  sinker.vm.provision "shell", inline: $script
+
+   	end
+	config.vm.define "main" do |main|
+	  main.vm.box = "kaorimatz/debian-8.3-amd64"
+	  main.vm.network "private_network", ip: "192.168.33.11"
+	  main.vm.provision "shell", inline: $script
+	end
+end

@@ -1,17 +1,19 @@
-- name: 'get sysdig key'
-  get_url: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public dest=/tmp/DRAIOS-GPG-KEY.public mode=0440
-- name: 'install sysdig key'
-  command: apt-key add /tmp/DRAIOS-GPG-KEY.public
-- name: 'get sysdig repo'
-  get_url: url=http://download.draios.com/stable/deb/draios.list dest=/etc/apt/sources.list.d/draios.list mode=0440
 #- name: 'get linux sources'
 #  apt: name=linux-source state=present
 #- name: 'get linux sources'
 #  apt: name=linux-kernel-headers state=present
+- name: 'install requests'
+  pip: name=requests state=present
+  become: true
 - name: 'updating repo'
   apt: update_cache=yes
 - name: 'installing sysdig'
   apt: name=sysdig state=present
-- name: 'loading probe'
-  become: yes
-  command: sysdig-probe-loader
+- name: 'install curl'
+  apt: name=curl state=present
+
+
+
+#- name: 'loading probe'
+#  become: yes
+#  command: sysdig-probe-loader
