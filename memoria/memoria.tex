@@ -61,3 +61,46 @@ Envio de datos:
 * proceso local que envia a colector
 * syslog que envia fichero y luego proceso local en colectar procesa ficheros hacia la cola.
   GoLang syslog? RabbitMQ? Kafka?
+
+
+ MVP 1:
+
+Sonda.
+
+ un contenedor corriendo ssh en puerto 22 en un vps dado somos capaces de recuperar:
+
+ * ips que han intentando conectar.
+ * ips que han entrado al sistema.
+ * ordenes lanzadas.
+ * passwords intentadas.
+
+ Collector,
+
+ colecciona al menos 4 o 5 sondas.
+
+ API
+
+ es capaz de responder las siguientes preguntas:
+
+ * ips que han intentado conectar las ultimas 24 o X horas.
+ * ips que han conseguido entrar en las ultimas 24 o X horas.
+ * contrasenyas intentadas.
+ * ordenes lanzadas en esos contenedores.
+ * seria genial recuperar tambien intercambio de red.
+ * [OPTIONAL] sacar ids de claves publicas?
+ * [OPTIONAL]
+
+UI:
+
+ * mapa sacando esto?
+
+
+ Modelo de datos, por incidente:
+
+ Incidente ID:
+   ocurrido en container ID, con atacante ID y los detalles X.
+
+
+ .
+
+
