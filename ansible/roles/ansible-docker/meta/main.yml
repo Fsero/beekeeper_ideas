@@ -1,7 +1,0 @@
----
-dependencies:
-  - role: ansible-apt
-    apt_repo:
-      - repo_url: "deb https://apt.dockerproject.org/repo {{ ansible_distribution | lower }}-{{ ansible_distribution_release }} main"
-        key_id: "{{ docker_repo_key_id }}"
-        key_server: "{{ docker_repo_key_url }}"

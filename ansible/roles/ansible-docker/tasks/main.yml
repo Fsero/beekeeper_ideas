@@ -1,7 +1,0 @@
----
-- name: main | install docker packages
-  apt:
-    pkg: "{{ item }}"
-    state: 'latest'
-  with_items: "{{ docker_pkg }}"
-  notify: start docker
