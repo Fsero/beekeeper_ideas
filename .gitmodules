@@ -46,3 +46,6 @@
 [submodule "ansible/roles/simple-pki"]
 	path = ansible/roles/simple-pki
 	url = git@github.com:Fsero/ansible-simple-pki.git
+[submodule "ansible/roles/ansible-docker"]
+	path = ansible/roles/ansible-docker
+	url = git@github.com:Fsero/ansible-docker.git
