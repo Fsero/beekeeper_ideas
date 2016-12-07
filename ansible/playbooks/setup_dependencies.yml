@@ -1,0 +1,8 @@
+- hosts: 'pki:sinkers'
+  tasks:
+       - include: ../tasks/install_dependencies.yml
+         when: "'sinkers' in group_names"
+       - include: ../tasks/install_sysdig.yml
+         when: "'sinkers' in group_names"
+  roles:
+      - { role: ansible-docker, become: true, when: ansible_os_family == 'Debian' }

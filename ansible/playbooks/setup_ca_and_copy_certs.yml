@@ -1,0 +1,15 @@
+- hosts: 'pki:sinkers'
+  roles:
+      - { role: simple-pki, when: "'pki' in group_names" }
+  tasks:
+     - name: copying ca
+       copy: src={{ inventory_dir }}/../secret/storage/ca/chained-ca.sha256.4096.crt
+             dest=/etc/ssl/certs/chained-ca.sha256.4096.crt owner=root group=root mode=0400
+
+     - name: copyiing cert
+       copy: src={{ inventory_dir }}/../secret/storage/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt
+             dest=/etc/ssl/certs/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt owner=root group=root mode=0400
+
+     - name: copying key
+       copy: src={{ inventory_dir }}/../secret/storage/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key
+              dest=/etc/ssl/private/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key owner=root group=root mode=0400

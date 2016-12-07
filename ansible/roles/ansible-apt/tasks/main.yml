@@ -6,11 +6,11 @@
 
 - name: main | install ansible apt dependencies
   action: apt pkg={{ item }} state=latest
-  with_items: apt_pkg
+  with_items: "{{apt_pkg}}"
 
 - name: main | add repository
   apt_repository: "repo='{{ item.repo_url }}' state=present"
-  with_items: apt_repo
+  with_items: "{{apt_repo}}"
   when: apt_repo is defined
   register: apt_require_update
 
@@ -19,7 +19,7 @@
     id='{{ item.key_id }}'
     keyserver='{{ item.key_server }}'
     state=present
-  with_items: apt_repo
+  with_items: "{{apt_repo}}"
   when: item.key_id and item.key_server is defined
   register: apt_added_keyserver
 
@@ -28,7 +28,7 @@
     id='{{ item.key_id }}'
     url='{{ item.key_url }}'
     state=present
-  with_items: apt_repo
+  with_items: "{{apt_repo}}"
   when: item.key_id and item.key_url is defined
   register: apt_added_url
 

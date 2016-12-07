@@ -6,7 +6,17 @@
 #- name: 'install pip'
 #  command: python /tmp/get-pip.py
 #  become: true
+
+- name: 'install setuptools'
+  apt: name=python-setuptools state=present
+
+
+- name: 'install pip'
+  apt: name=python-pip state=present
+
 - name: 'install requests'
   pip: name=requests state=present
   become: true
 
+- name: 'install curl'
+  apt: name=curl state=present

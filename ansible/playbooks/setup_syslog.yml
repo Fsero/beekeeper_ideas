@@ -35,7 +35,7 @@
     rsyslog_rsyslog_tls_cert_path: "/etc/ssl/certs/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt"
     rsyslog_rsyslog_tls_key_path: "/etc/ssl/private/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key"
     rsyslog_rsyslog_d_files:
-          11-listen-gnu-tls:
+          12-listen-gnu-tls:
             settings:
               - $WorkDirectory /var/spool/rsyslog # default location for work (spool) files
               - $ActionQueueType LinkedList # use asynchronous processing

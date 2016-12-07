@@ -43,3 +43,6 @@
 [submodule "ansible/roles/ansible-rsyslog"]
 	path = ansible/roles/ansible-rsyslog
 	url = https://github.com/Oefenweb/ansible-rsyslog.git
+[submodule "ansible/roles/simple-pki"]
+	path = ansible/roles/simple-pki
+	url = git@github.com:Fsero/ansible-simple-pki.git

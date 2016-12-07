@@ -2,15 +2,19 @@
 #  apt: name=linux-source state=present
 #- name: 'get linux sources'
 #  apt: name=linux-kernel-headers state=present
-- name: 'install requests'
-  pip: name=requests state=present
-  become: true
+
+
+
+
 - name: 'updating repo'
   apt: update_cache=yes
 - name: 'installing sysdig'
   apt: name=sysdig state=present
-- name: 'install curl'
-  apt: name=curl state=present
+
+- name: 'installing falco'
+  apt: name=falco state=present
+
+
 
 
 
