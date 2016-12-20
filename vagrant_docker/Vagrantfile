@@ -12,27 +12,27 @@ Vagrant.configure(2) do |config|
 
 
    config.ssh.username = "root"
-   config.ssh.private_key_path = "/home/fsero/.ssh/id_rsa"
+   config.ssh.private_key_path = "/home/fsero/.ssh/id_dsa"
 
 
    config.vm.define "sinker" do |v|
        v.vm.provider "docker" do |d|
-           d.build_dir = "/home/fsero/repos/b/pfc/vagrant"
+           d.build_dir = "/home/fsero/repos/b/pfc/vagrant_docker"
            d.build_args = ["-t", "sinker"]
            d.name = "sinker"
            d.remains_running = false
-           d.create_args = ["-it", "--privileged", "-d"]
+           d.create_args = ["-it", "--privileged"]
            d.has_ssh = true
        end
    end
 
    config.vm.define "main" do |v|
        v.vm.provider "docker" do |d|
-           d.build_dir = "/home/fsero/repos/b/pfc/vagrant"
+           d.build_dir = "/home/fsero/repos/b/pfc/vagrant_docker"
            d.build_args = ["-t", "main"]
            d.name = "main"
            d.remains_running = false
-           d.create_args = ["-it", "--privileged", "-d"]
+           d.create_args = ["-it", "--privileged"]
            d.has_ssh = true
        end
    end

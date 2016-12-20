@@ -1,0 +1,14 @@
+---
+# vars.yml
+#
+# Shows the value of all variables/facts.
+#
+# Example:
+#
+#   ansible-playbook vars.yml -e 'hosts=localhost'
+#
+
+- hosts: "*"
+  tasks:
+    - debug: var=vars
+    - debug: var=hostvars[inventory_hostname]
