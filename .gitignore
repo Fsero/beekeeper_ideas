@@ -3,3 +3,4 @@
 .vagrant
 *.retry
 ansible/secret/*
+nsible/inventory/local/storage/*

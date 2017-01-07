@@ -1,18 +1,25 @@
-#- name: 'remove python-pip'
-#  apt: name=python-pip state=absent
-#  become: true
-#- name: "get get-pip script"
-#  get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py mode=0440
-#- name: 'install pip'
-#  command: python /tmp/get-pip.py
-#  become: true
 
 - name: 'install setuptools'
   apt: name=python-setuptools state=present
 
+- name: 'install python-dev'
+  apt: name=python-dev state=present
+
+- name: 'install libffi-dev'
+  apt: name=libffi-dev state=present
+
+- name: 'install build-essential'
+  apt: name=build-essential state=present
+
+- name: 'install libssl-dev'
+  apt: name=libssl-dev state=present
 
 - name: 'install pip'
   apt: name=python-pip state=present
+
+- name: 'upgrade pip'
+  pip: name=pip state=latest
+  become: true
 
 - name: 'install requests'
   pip: name=requests state=present

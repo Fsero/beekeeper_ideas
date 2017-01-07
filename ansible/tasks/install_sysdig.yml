@@ -1,7 +1,7 @@
-#- name: 'get linux sources'
-#  apt: name=linux-source state=present
-#- name: 'get linux sources'
-#  apt: name=linux-kernel-headers state=present
+- name: 'get linux sources'
+  apt: name=linux-source state=present
+- name: 'get linux sources'
+  apt: name=linux-kernel-headers state=present
 
 
 
