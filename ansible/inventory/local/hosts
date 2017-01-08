@@ -1,11 +1,11 @@
 [sinkers]
 sinker01.vm.localhost ansible_user=vagrant ansible_become=true hostname=srv01
-sinker01.docker.localhost ansible_user=root ansible_become=true hostname=srv01
+sinker01.docker.localhost ansible_user=root ansible_port=2202 ansible_become=true hostname=srv01
 
 [pki]
-main01.vm.localhost ansible_user=vagrant ansible_become=true hostname=main01
-main01.docker.localhost ansible_user=root ansible_become=true hostname=main01
+pki.vm.localhost ansible_user=vagrant ansible_become=true hostname=pki
+pki.docker.localhost ansible_user=root ansible_port=2202 ansible_become=true hostname=pki
 
 [collector]
 main01.vm.localhost ansible_user=vagrant ansible_become=true hostname=main01
-main01.docker.localhost ansible_user=root ansible_become=true hostname=main01
+main01.docker.localhost ansible_user=root ansible_port=2201 ansible_become=true hostname=main01

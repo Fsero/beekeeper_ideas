@@ -8,11 +8,10 @@
 
 
 $script = <<SCRIPT
+      echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main > /etc/apt/sources.list.d/ansible.list"
 	  sudo apt-get -y update
-	  sudo apt-get -y install python-setuptools python-dev libffi-dev build-essential libssl-dev
-	  sudo easy_install pip
-	  sudo pip install ansible
-	  sudo sed -i -e "\\#PasswordAuthentication yes# s!#PasswordAuthentication yes!PasswordAuthentication yes!g s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+	  sudo apt-get install -y ansible
+	  #sudo sed -i -e "\\#PasswordAuthentication yes# s!#PasswordAuthentication yes!PasswordAuthentication yes!g s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
       sudo service ssh restart
 SCRIPT
 
@@ -43,4 +42,13 @@ Vagrant.configure(2) do |config|
       main.vm.provision "file", source: "/home/fsero/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
 
 	end
+	config.vm.define "pki" do |pki|
+    	  pki.vm.box = "kaorimatz/debian-8.3-amd64"
+    	  pki.vm.network "private_network", ip: "192.168.33.12"
+    	  pki.vm.provision "shell", inline: $script
+    	  pki.ssh.insert_key = false
+          pki.ssh.private_key_path = ["/home/fsero/.ssh/id_dsa", "/home/fsero/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
+          pki.vm.provision "file", source: "/home/fsero/.ssh/id_dsa.pub", destination: "~/.ssh/authorized_keys"
+          pki.vm.provision "file", source: "/home/fsero/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+    end
 end

@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch sysdig as daemon
+
+[Service]
+Type=notify
+ExecStart=/usr/local/sbin/sysdigd start
+ExecStop=/usr/local/sbin/sysdigd stop
+RemainAfterExit=no
+Restart=always
+PIDFile=/var/run/sysdigd.pid
+
+[Install]
+WantedBy=multi-user.target

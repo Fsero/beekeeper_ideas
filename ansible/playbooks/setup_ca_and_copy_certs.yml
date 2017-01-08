@@ -1,15 +1,22 @@
-- hosts: 'pki:sinkers'
+- hosts: '*'
   roles:
       - { role: simple-pki, when: "'pki' in group_names" }
+
+  vars:
+    base_certs_path: "{{ inventory_dir }}/../local/storage/simple-pki"
+    certs_path: "{{ base_certs_path }}/pki.{{ ( 'docker' in inventory_hostname ) | ternary('docker','vm')}}.localhost"
   tasks:
      - name: copying ca
-       copy: src={{ inventory_dir }}/../local/storage/simple-pki/main01.localhost/ca/chained-ca.sha256.4096.crt
+       when: "'pki' not in group_names"
+       copy: src={{ certs_path }}/ca/chained-ca.sha256.4096.crt
              dest=/etc/ssl/certs/chained-ca.sha256.4096.crt owner=root group=root mode=0400
 
      - name: copyiing cert
-       copy: src={{ inventory_dir }}/../local/storage/simple-pki/main01.localhost/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt
+       when: "'pki' not in group_names"
+       copy: src={{ certs_path }}/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt
              dest=/etc/ssl/certs/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt owner=root group=root mode=0400
 
      - name: copying key
-       copy: src={{ inventory_dir }}/../local/storage/simple-pki/main01.localhost/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key
+       when: "'pki' not in group_names"
+       copy: src={{ certs_path }}/servers/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key
               dest=/etc/ssl/private/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key owner=root group=root mode=0400
