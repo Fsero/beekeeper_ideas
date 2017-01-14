@@ -1,0 +1,116 @@
+---
+rsyslog_rsyslog_enable_tls: true
+rsyslog_rsyslog_tls_ca_path: "/etc/ssl/certs/chained-ca.sha256.4096.crt"
+rsyslog_rsyslog_tls_cert_path: "/etc/ssl/certs/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.crt"
+rsyslog_rsyslog_tls_key_path: "/etc/ssl/private/{{ ansible_hostname }}.superprivyhosting.com.sha256.4096.key"
+rsyslog_rsyslog_d_presets_50_default:
+  rules:
+    #
+    # First some standard log files. Log by facility.
+    #
+    - rule: 'auth,authpriv.*'
+      logpath: '/var/log/auth.log'
+    - rule: '*.*;auth,authpriv.none'
+      logpath: '-/var/log/syslog'
+    - rule: '#cron.*'
+      logpath: '/var/log/cron.log'
+    - rule: '#daemon.*'
+      logpath: '-/var/log/daemon.log'
+    - rule: 'kern.*'
+      logpath: '-/var/log/kern.log'
+    - rule: '#lpr.*'
+      logpath: '-/var/log/lpr.log'
+    - rule: 'mail.*'
+      logpath: '-/var/log/mail.log'
+    - rule: '#user.*'
+      logpath: '-/var/log/user.log'
+
+    #
+    # Logging for the mail system. Split it up so that
+    # it is easy to write scripts to parse these files.
+    #
+    - rule: '#mail.info'
+      logpath: '-/var/log/mail.info'
+    - rule: '#mail.warn'
+      logpath: '-/var/log/mail.warn'
+    - rule: 'mail.err'
+      logpath: '/var/log/mail.err'
+
+    #
+    # Logging for INN news system.
+    #
+    - rule: 'news.crit'
+      logpath: '/var/log/news/news.crit'
+    - rule: 'news.err'
+      logpath: '/var/log/news/news.err'
+    - rule: 'news.notice'
+      logpath: '-/var/log/news/news.notice'
+
+    #
+    # Some "catch-all" log files.
+    #
+    - rule: '#*.=debug;auth,authpriv.none;news.none;mail.none'
+      logpath: '-/var/log/debug'
+    - rule: '#*.=info;*.=notice;*.=warn;auth,authpriv.none;cron,daemon.none;mail,news.none'
+      logpath: '-/var/log/messages'
+
+    #
+    # Emergencies are sent to everybody logged in.
+    #
+    - rule: '*.emerg'
+      logpath: ':omusrmsg:*'
+
+    #
+    # I like to have messages displayed on the console, but only on a virtual
+    # console I usually leave idle.
+    #
+    - rule: '#daemon,mail.*;news.=crit;news.=err;news.=notice;*.=debug;*.=info;*.=notice;*.=warn'
+      logpath: '/dev/tty8'
+
+    # The named pipe /dev/xconsole is for the `xconsole' utility.  To use it,
+    # you must invoke `xconsole' with the `-file' option:
+    #
+    #    $ xconsole -file /dev/xconsole [...]
+    #
+    # NOTE: adjust the list below, or you'll go crazy if you have a reasonably
+    #      busy site..
+    #
+    - rule: 'daemon.*;mail.*;news.err;*.=debug;*.=info;*.=notice;*.=warn'
+      logpath: '|/dev/xconsole'
+rsyslog_rsyslog_d_files:
+          50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"
+          12-listen-gnu-tls:
+            validate: false
+            settings:
+            # Increase the amount of open files rsyslog is allowed, which includes open tcp sockets
+            # This is important if there are many clients.
+            # http://www.rsyslog.com/doc/rsconf1_maxopenfiles.html
+            - $MaxOpenFiles 2048
+
+            # make gtls driver the default
+            - $DefaultNetstreamDriver gtls
+
+            # certificate files generated on RHEL6 and stored in /root
+            - $DefaultNetstreamDriverCAFile {{ rsyslog_rsyslog_tls_ca_path }}
+            - $DefaultNetstreamDriverCertFile {{ rsyslog_rsyslog_tls_cert_path }}
+            - $DefaultNetstreamDriverKeyFile {{ rsyslog_rsyslog_tls_key_path }}
+
+
+
+            # Provides TCP syslog reception
+            # for parameters see http://www.rsyslog.com/doc/imtcp.html
+            - module(load="imtcp"
+                   MaxSessions="2000"
+                   StreamDriver.mode="1"
+                  StreamDriver.authmode="x509/name"
+                   PermittedPeer="*.superprivyhosting.com")
+            - input(type="imtcp" port="10514" name="tcp-tls")
+rsyslog_repeated_msg_reduction: true
+rsyslog_file_owner: root
+rsyslog_file_group: adm
+rsyslog_file_create_mode: '0640'
+rsyslog_dir_create_mode: '0755'
+rsyslog_umask: '0022'
+#rsyslog_priv_drop_to_user: syslog
+#rsyslog_priv_drop_to_group: syslog
+#rsyslog_priv_drop_to_group: syslog

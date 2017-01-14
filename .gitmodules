@@ -49,3 +49,6 @@
 [submodule "ansible/roles/ansible-docker"]
 	path = ansible/roles/ansible-docker
 	url = git@github.com:Fsero/ansible-docker.git
+[submodule "ansible/roles/dev-sec.ssh-hardening"]
+	path = ansible/roles/dev-sec.ssh-hardening
+	url = git@github.com:Fsero/ansible-ssh-hardening.git

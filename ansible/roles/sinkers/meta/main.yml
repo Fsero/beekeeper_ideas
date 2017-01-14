@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: ansible-apt
+    apt_repo:
+      - repo_url: "deb http://download.draios.com/stable/deb stable-$(ARCH)/ "
+        key_url: "{{ sysdig_repo_key_url }}"
+        key_id: "{{ sysdig_repo_key_id }}"

@@ -1,0 +1,8 @@
+[sinkers]
+sinker01.vm.localhost ansible_user=vagrant ansible_become=true hostname=srv01.superprivyhosting.com
+
+[pki]
+pki.vm.localhost ansible_user=vagrant ansible_become=true hostname=pki.superprivyhosting.com
+
+[collector]
+main01.vm.localhost ansible_user=vagrant ansible_become=true hostname=main01.superprivyhosting.com

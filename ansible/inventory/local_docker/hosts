@@ -1,0 +1,8 @@
+[sinkers]
+sinker01.docker.localhost ansible_user=root ansible_port=2202 ansible_become=true hostname=srv01.superprivyhosting.com
+
+[pki]
+pki.docker.localhost ansible_user=root ansible_port=2202 ansible_become=true hostname=pki.superprivyhosting.com
+
+[collector]
+main01.docker.localhost ansible_user=root ansible_port=2201 ansible_become=true hostname=main01.superprivyhosting.com

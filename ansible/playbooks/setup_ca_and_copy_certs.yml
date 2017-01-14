@@ -3,7 +3,7 @@
       - { role: simple-pki, when: "'pki' in group_names" }
 
   vars:
-    base_certs_path: "{{ inventory_dir }}/../local/storage/simple-pki"
+    base_certs_path: "{{ inventory_dir }}/storage/simple-pki"
     certs_path: "{{ base_certs_path }}/pki.{{ ( 'docker' in inventory_hostname ) | ternary('docker','vm')}}.localhost"
   tasks:
      - name: copying ca

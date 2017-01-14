@@ -1,7 +1,0 @@
-- hosts: 'sinkers'
-  roles:
-    - role: ansible-apt
-      apt_repo:
-        - repo_url: "deb http://download.draios.com/stable/deb stable-$(ARCH)/ "
-          key_url: "https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public"
-          key_id: "EC51E8C4"

@@ -1,25 +1,3 @@
 - hosts: '*'
-  tasks:
-  - name: changing hostname
-    hostname: name="{{ hostname }}"
-
-  - name: "generate /etc/hosts.ansible file"
-    template: "src=../templates/etc/hosts.j2 dest='/etc/hosts.ansible' owner=root group=root mode=0644"
-    tags: etc_hosts
-    become: true
-
-  - name: "check if debian generated hosts file has a backup"
-    stat: "path=/etc/hosts.debian"
-    tags: etc_hosts
-    register: etc_hosts_debian
-
-  - name: "backup debian generated /etc/hosts"
-    command: "cp /etc/hosts /etc/hosts.debian"
-    when: etc_hosts_debian.stat.islnk is not defined
-    tags: etc_hosts
-    become: true
-
-  - name: "install /etc/hosts.ansible file"
-    command: "cp /etc/hosts.ansible /etc/hosts"
-    tags: etc_hosts
-    become: true
+  roles:
+      - { role: ansible-hosts-manager, become: true, when: ansible_os_family == 'Debian' }

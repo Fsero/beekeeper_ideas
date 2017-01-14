@@ -10,7 +10,7 @@
 $script = <<SCRIPT
       echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main > /etc/apt/sources.list.d/ansible.list"
 	  sudo apt-get -y update
-	  sudo apt-get install -y ansible
+	  sudo apt-get install -y ansible dbus
 	  #sudo sed -i -e "\\#PasswordAuthentication yes# s!#PasswordAuthentication yes!PasswordAuthentication yes!g s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
       sudo service ssh restart
 SCRIPT

@@ -1,0 +1,23 @@
+
+- name: 'get linux sources'
+  apt: name=linux-source state=present
+- name: 'get linux sources'
+  apt: name=linux-kernel-headers state=present
+- name: 'updating repo'
+  apt: update_cache=yes
+- name: 'installing sysdig'
+  apt: name=sysdig state=present
+- name: 'testing if sysdig works'
+  become: yes
+  command: sysdig-probe-loader
+- name: 'installing falco'
+  apt: name=falco state=present
+- name: 'setting up sysdig as a service'
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode={{ item.mode }}
+  with_items:
+    - { src: '../files/sysdigd', dest: '/usr/local/sbin/sysdigd', mode: '0500' }
+    - { src: '../files/sysdigd.service', dest: '/etc/systemd/system/sysdigd.service', mode: '0444' }
+- name: 'starting up sysdig'
+  systemd: state=started name=sysdigd daemon_reload=yes enabled=yes
+
+
