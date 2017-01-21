@@ -1,0 +1,99 @@
+- hosts: all
+  vars:
+    ssh_ca_filename: "users_ca_key"
+    ssh_ca_host: "pki"
+    ssh_certs_users:
+      - { 'username': vagrant,
+                        'dest': '/root/.ssh',
+                        'sshkey': 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9z79JTeLubtJ9wqLe4ZWdKXD6d3KojIFS2bXdiaNb79GStG0SCI/K4FyDnkjIWoh6WJZYtfnLc892FpDhM4xsqqbaXTiz9yZjpsFpd6IF4g1GO0DhJYO9vDOIlsPJZqDylbYKSElfbfoVH0q15PZseLRvyaaYJvkn/J4tsS9u17LQBRqapiAnl0IxT++GqIK0cga24TCloT3Qwz8dYaBhDTOeEQFaf4q1vLqWlUWWxWf96Hc3cExsNOL7g7z95F0QBONqM9Wc3wFrmqdWomEebqefstxYUkEcsPonpcqbV+W88VubZxnM9UEl77h896dvQNzx5ZkJwYdUXSZianDN fsero@arrakis'
+        }
+      - {
+                        'username': root,
+                        'sshkey': 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9z79JTeLubtJ9wqLe4ZWdKXD6d3KojIFS2bXdiaNb79GStG0SCI/K4FyDnkjIWoh6WJZYtfnLc892FpDhM4xsqqbaXTiz9yZjpsFpd6IF4g1GO0DhJYO9vDOIlsPJZqDylbYKSElfbfoVH0q15PZseLRvyaaYJvkn/J4tsS9u17LQBRqapiAnl0IxT++GqIK0cga24TCloT3Qwz8dYaBhDTOeEQFaf4q1vLqWlUWWxWf96Hc3cExsNOL7g7z95F0QBONqM9Wc3wFrmqdWomEebqefstxYUkEcsPonpcqbV+W88VubZxnM9UEl77h896dvQNzx5ZkJwYdUXSZianDN fsero@arrakis'
+        }
+
+
+  tasks:
+  - name: Generate SSH key for users CA
+    shell: "ssh-keygen -N '' -f /etc/ssh/{{ssh_ca_filename}} -q "
+    args:
+      creates: /etc/ssh/{{ssh_ca_filename}}
+    when: "'{{ssh_ca_host}}' in group_names"
+
+  - name: 'fetching SSH CA pub key'
+    fetch:
+      src: /etc/ssh/{{ssh_ca_filename}}.pub
+      flat: yes
+      dest: "{{inventory_dir}}/storage/ssh_keys/{{ssh_ca_filename}}.pub"
+
+  - name: 'copying users CA pub'
+    copy:
+      src: "{{inventory_dir}}/storage/ssh_keys/{{ssh_ca_filename}}.pub"
+      dest: "/etc/ssh/{{ssh_ca_filename}}.pub"
+      owner: root
+      group: root
+      mode: 0444
+    with_items: "{{play_hosts}}"
+
+  - name: "her"
+    debug:
+      var: ssh_certs_users
+
+  - name: 'copying user certs into PKI host'
+    blockinfile:
+      name: /etc/ssh/ssh_{{item.username}}_rsa_key.pub
+      create: yes
+      block: |
+        {{item.sshkey}}
+      owner: root
+      group: root
+      mode: 0644
+    when: "'{{ssh_ca_host}}' in group_names"
+    with_items: "{{ssh_certs_users}}"
+
+  - name: 'Signing users keys'
+    shell: "ssh-keygen -s /etc/ssh/{{ssh_ca_filename}} -I user_{{item.username}} -h -n {{item.username}} -V +52w /etc/ssh/ssh_{{item.username}}_rsa_key.pub"
+    args:
+      creates: "/etc/ssh/ssh_{{item.username}}_rsa_key-cert.pub"
+    with_items: "{{ssh_certs_users}}"
+    when: "'{{ssh_ca_host}}' in group_names"
+
+  - name: 'fetching signed hosts CA ssh keys'
+    fetch:
+        src: "/etc/ssh/ssh_{{item.username}}_rsa_key-cert.pub"
+        dest: "{{inventory_dir}}/storage/ssh_signed_users_keys/"
+        flat: yes
+    when: "'{{ssh_ca_host}}' in group_names"
+    with_items: "{{ssh_certs_users}}"
+
+  - name: 'creating ssh dir'
+    file:
+      dest: "{{ ansible_env.HOME }}/.ssh"
+      mode: 0700
+      state: 'directory'
+
+  - name: 'copying signed users certs key in servers'
+    copy:
+      src: "{{inventory_dir}}/storage/ssh_signed_users_keys/ssh_{{item.username}}_rsa_key-cert.pub"
+      dest: "{{ ansible_env.HOME }}/.ssh/ssh_{{item.username}}_rsa_key-cert.pub"
+      owner: root
+      group: root
+      mode: 0644
+    with_items: "{{ssh_certs_users}}"
+
+  - name: 'adding config'
+    lineinfile:
+      name: /etc/ssh/sshd_config
+      regexp: '^TrustedUserCAKeys /etc/ssh/{{ssh_ca_filename}}.pub'
+      insertafter: 'EOF'
+      line: 'TrustedUserCAKeys /etc/ssh/{{ssh_ca_filename}}.pub'
+
+    notify:
+      - restart sshd
+
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
+
+  tags: sshUsersCA
+

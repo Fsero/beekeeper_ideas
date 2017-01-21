@@ -1,6 +1,7 @@
 #- include: debug_vars.yml
 - include: setup_hostname_and_hosts_file.yml
 - include: setup_hosts_ca.yml
+- include: setup_users_ca.yml
 - include: setup_ca_and_copy_certs.yml
 - include: setup_dependencies.yml
 - include: setup_syslog.yml

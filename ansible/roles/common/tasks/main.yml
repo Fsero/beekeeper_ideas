@@ -31,3 +31,5 @@
 - name: 'install dbus'
   apt: name=dbus state=present
 
+- name: 'installing rsyslog-gnutls'
+  apt: name=rsyslog-gnutls state=present

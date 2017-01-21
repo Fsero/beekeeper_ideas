@@ -1,9 +1,5 @@
 - hosts: '*'
   roles:
      - { role: ansible-rsyslog, become: true }
-  pre_tasks:
-  - name: 'installing rsyslog-gnutls'
-    apt: name=rsyslog-gnutls state=present
-
   tags: collector
 
