@@ -2,7 +2,7 @@
 Description=Launch sysdigd as daemon
 
 [Service]
-Type=notify
+Type=forking
 ExecStart=/usr/local/sbin/sysdigd start
 ExecStop=/usr/local/sbin/sysdigd stop
 RemainAfterExit=no

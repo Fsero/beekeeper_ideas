@@ -13,10 +13,13 @@
 - name: 'installing falco'
   apt: name=falco state=present
 - name: 'setting up sysdig as a service'
-  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode={{ item.mode }}
-  with_items:
-    - { src: '../files/sysdigd', dest: '/usr/local/sbin/sysdigd', mode: '0500' }
-    - { src: '../files/sysdigd.service', dest: '/etc/systemd/system/sysdigd.service', mode: '0444' }
+  copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: "{{ item.mode }}"
+  with_items: "{{sysdig_files}}"
 - name: 'starting up sysdig'
   systemd: state=started name=sysdigd daemon_reload=yes enabled=yes
 

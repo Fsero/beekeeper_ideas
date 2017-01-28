@@ -1,7 +1,10 @@
-FROM ansible_test_base
-ENV PASSWORD_GENERATED 123456
+FROM debian:latest
+ARG PASSWORD_GENERATED
 RUN echo "root:$PASSWORD_GENERATED" | chpasswd
 RUN unset PASSWORD_GENERATED
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod a+x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+RUN apt-get update
+RUN apt-get install -y ssh
+CMD /etc/init.d/ssh start && bash -l
+ENTRYPOINT /etc/init.d/ssh start && bash -l
+
+

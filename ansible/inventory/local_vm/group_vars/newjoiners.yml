@@ -1,0 +1,5 @@
+# ports to which ssh-server should listen to
+ssh_server_ports: ['30009']      # sshd
+
+# ports to which ssh-client should connect to
+ssh_client_ports: ['22']      # ssh

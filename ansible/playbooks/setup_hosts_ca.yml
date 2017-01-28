@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: '!newjoiners'
   vars:
     ssh_ca_domain: "*.superprivyhosting.com"
     ssh_ca_filename: "server_ca_key"

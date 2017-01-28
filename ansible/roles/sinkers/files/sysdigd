@@ -23,7 +23,9 @@ do_start() {
     if [ -n "${KPID}" -a -d "/proc/${KPID}" ];then
         logger -t info [sysdigd] sysdig already running
     else
-        bash -c 'sysdig -F -C 200 -G 300 -W 5 -z -w /var/log/traces/$(hostname).%F-%H-%M.part > /dev/null 2>&1 &'
+        logger -t info [sysdigd] launching sysdigd
+        bash -c 'sysdig -s 4096 -pc -F -C 200 -G 300 -W 5 -z -w /var/log/traces/$(hostname).%F-%H-%M.part > /dev/null 2>&1 &'
+        logger -t info [sysdigd] launched sysdigd
         PID=$(pidof sysdig)
         if [ -z "$PID" ];then
             logger -t error [sysdigd] something went wrong, unable to launch sysdig

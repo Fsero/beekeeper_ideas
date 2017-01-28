@@ -1,0 +1,4 @@
+- hosts: 'newjoiners'
+  roles:
+      - { role: dev-sec.ssh-hardening }
+  tags: ['role::bootstrap:sshd']

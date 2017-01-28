@@ -1,3 +1,7 @@
 ---
 sysdig_repo_key_url: "https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public"
 sysdig_repo_key_id: "EC51E8C4"
+
+sysdig_files:
+  - { src: '../files/sysdigd', dest: '/usr/local/sbin/sysdigd', mode: '0500' }
+  - { src: '../files/sysdigd.service', dest: '/etc/systemd/system/sysdigd.service', mode: '0444' }

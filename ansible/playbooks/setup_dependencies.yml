@@ -1,4 +1,4 @@
-- hosts: 'all'
+- hosts: '!newjoiners'
   roles:
       - { role: common, become: true }
       - { role: sinkers, become: true, when: "'sinkers' in group_names" }

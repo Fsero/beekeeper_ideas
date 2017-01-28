@@ -1,8 +1,14 @@
 [sinkers]
-sinker01.vm.localhost ansible_user=vagrant ansible_become=true hostname=srv01.superprivyhosting.com
+sinker01.vm.localhost ansible_user=vagrant ansible_port=30009 ansible_become=true hostname=srv01.superprivyhosting.com
 
 [pki]
-pki.vm.localhost ansible_user=vagrant ansible_become=true hostname=pki.superprivyhosting.com
+pki.vm.localhost ansible_user=vagrant ansible_port=30009 ansible_become=true hostname=pki.superprivyhosting.com
 
 [collector]
-main01.vm.localhost ansible_user=vagrant ansible_become=true hostname=main01.superprivyhosting.com
+main01.vm.localhost ansible_user=vagrant ansible_port=30009 ansible_become=true hostname=main01.superprivyhosting.com
+
+[newjoiners]
+sinker01.superprivyhosting.com ansible_user=vagrant ansible_port=22 ansible_become=true hostname=srv01.superprivyhosting.com
+pki.superprivyhosting.com ansible_user=vagrant ansible_port=22 ansible_become=true hostname=pki.superprivyhosting.com
+main01.superprivyhosting.com ansible_user=vagrant ansible_port=22 ansible_become=true hostname=main01.superprivyhosting.com
+

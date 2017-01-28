@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: '!newjoiners'
   vars:
     ssh_ca_filename: "users_ca_key"
     ssh_ca_host: "pki"

@@ -1,4 +1,4 @@
-- hosts: '*'
+- hosts: '!newjoiners'
   roles:
       - { role: simple-pki, when: "'pki' in group_names" }
 

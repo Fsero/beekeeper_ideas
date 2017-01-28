@@ -22,18 +22,21 @@ Vagrant.configure(2) do |config|
 	end
 
 
+
      config.vm.define "sinker" do |sinker|
 	  sinker.vm.box = "kaorimatz/debian-8.3-amd64"
 	  sinker.vm.network "private_network", ip: "192.168.33.10"
 	  sinker.vm.provision "shell", inline: $script
 	  sinker.ssh.insert_key = false
       sinker.ssh.private_key_path = ["/home/fsero/.ssh/id_dsa", "/home/fsero/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
+      #sinker.ssh.port = 30009
       sinker.vm.provision "file", source: "/home/fsero/.ssh/id_dsa.pub", destination: "~/.ssh/authorized_keys"
       sinker.vm.provision "file", source: "/home/fsero/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
 
    	end
 	config.vm.define "main" do |main|
 	  main.vm.box = "kaorimatz/debian-8.3-amd64"
+	  #main.ssh.port = 30009
 	  main.vm.network "private_network", ip: "192.168.33.11"
 	  main.vm.provision "shell", inline: $script
 	  main.ssh.insert_key = false
@@ -44,6 +47,7 @@ Vagrant.configure(2) do |config|
 	end
 	config.vm.define "pki" do |pki|
     	  pki.vm.box = "kaorimatz/debian-8.3-amd64"
+    	  #pki.ssh.port = 30009
     	  pki.vm.network "private_network", ip: "192.168.33.12"
     	  pki.vm.provision "shell", inline: $script
     	  pki.ssh.insert_key = false
