@@ -1,5 +1,5 @@
 [sinkers]
-sinker01.vm.localhost ansible_user=vagrant ansible_port=30009 ansible_become=true hostname=srv01.superprivyhosting.com
+sinker01.vm.localhost ansible_user=joe ansible_port=30009 ansible_become=true hostname=srv01.superprivyhosting.com
 
 [pki]
 pki.vm.localhost ansible_user=vagrant ansible_port=30009 ansible_become=true hostname=pki.superprivyhosting.com

@@ -1,3 +1,7 @@
 ---
 - name: restart sysdigd
-  systemd: state=restarted name=sysdigd daemon_reload=yes enabled=yes
+  systemd:
+    state: restarted
+    name: sysdigd
+    daemon_reload: yes
+    enabled: yes

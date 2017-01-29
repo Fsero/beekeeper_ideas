@@ -1,0 +1,82 @@
+- name: 'installing docker-py'
+  pip: name=docker-py state=latest
+  become: true
+  tags: 'sinkers::docker:build'
+
+- name: launch local docker registry
+  docker_container:
+    name: local_registry
+    image: registry
+    state: started
+    pull: true
+    ports:
+    - "5000:5000"
+    detach: true
+  tags:
+    - 'sinkers::docker:run'
+    - 'sinkers::docker:build'
+
+- name: creates Docker build image
+  file:
+    path: /var/tmp/image
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+    recurse: yes
+  tags: 'sinkers::docker:build'
+
+- name: 'copying Dockerfile into build dir'
+  copy:
+    src: "Dockerfile"
+    dest: /var/tmp/image/Dockerfile
+    owner: root
+    group: root
+    mode: 0644
+  tags: 'sinkers::docker:build'
+
+
+- name: generate a random password from dicts
+  shell: "sort -R /usr/share/dict/words | head -1"
+  register: random_password
+  tags: 'sinkers::docker:build'
+
+- name: Reclaim unused docker images space
+  command: "docker system prune -f"
+  tags: 'sinkers::docker:build'
+
+- name: Build image and with buildargs
+  docker_image:
+   path: "/var/tmp/image"
+   repository: "localhost:5000/ssh"
+   name: ssh
+   force: yes
+   push: yes
+   buildargs:
+     PASSWORD_GENERATED: "{{random_password.stdout}}"
+  tags: 'sinkers::docker:build'
+
+- name: generate a random hostname from dicts
+  shell: "sort -R /usr/share/dict/words | head -1 "
+  register: random_hostname
+  tags: 'sinkers::docker:run'
+
+
+
+
+- name: launch potted containers
+  docker_container:
+    name: local_ssh
+    image: "localhost:5000/ssh"
+    state: started
+    pull: true
+    ports:
+    - "22:22"
+    detach: true
+    hostname: "{{random_hostname.stdout}}"
+    privileged: true
+  tags: 'sinkers::docker:run'
+
+
+
+
