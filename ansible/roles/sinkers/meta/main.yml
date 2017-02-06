@@ -5,3 +5,6 @@ dependencies:
       - repo_url: "deb http://download.draios.com/stable/deb stable-$(ARCH)/ "
         key_url: "{{ sysdig_repo_key_url }}"
         key_id: "{{ sysdig_repo_key_id }}"
+  - role: ansible-docker
+    become: true
+    when: ansible_os_family == 'Debian'

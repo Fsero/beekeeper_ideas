@@ -1,5 +1,5 @@
 - hosts: '!newjoiners'
+  any_errors_fatal: true
   roles:
       - { role: common, become: true }
       - { role: sinkers, become: true, when: "'sinkers' in group_names" }
-      - { role: ansible-docker, become: true, when: ansible_os_family == 'Debian' }
