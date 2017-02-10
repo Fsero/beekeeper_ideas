@@ -1,0 +1,47 @@
+sinker:
+
+ - registry needs to be launched at startup time.
+ - potted docker needs to be launched at startup time.
+ - rate limit in potted docker.
+ - clean/reset potted container when compromised, rebuild image with new random password.
+ - improve potted container, add wget/curl/nano/vim to enable bad guys to misbehave
+ - edit falco rules to just listen container events.
+ - edit falco rules to set a program that list events and restart the container.
+
+collector:
+ - split files over hostnames.
+ - ingest from syslog/files to elasticsearch.
+ - retrieve scap from probes, rotates them.
+ - process scap to get ssh password.
+
+
+sysdig filter
+
+sysdig -pc -A -s 4096 --unbuffered -F -r srv01.superprivyhosting.com.2017-02-06-17-32.part3 fd.num=4 and evt.is_io_write=true and evt.dir = '<' and proc.name=sshd | less
+
+
+success
+
+81452 17:34:03.543186196 0 kind_cori (7fbaabcc7650) sshd (2254:23) < write res=10 data=
+123456
+82698 17:34:05.803372808 0 kind_cori (7fbaabcc7650) sshd (2253:22) < sendto res=136 data=
+Lop=PAM:authentication acct="root" exe="/usr/sbin/sshd" hostname=192.168.33.1 addr=192.168.33.1 terminal=ssh res=failed
+
+failed
+
+46005 17:33:11.701245030 1 kind_cori (7fbaabcc7650) sshd (2236:21) < write res=8 data=
+paco
+47094 17:33:13.817253300 0 kind_cori (7fbaabcc7650) sshd (2233:20) < sendto res=136 data=
+Lop=PAM:authentication acct="root" exe="/usr/sbin/sshd" hostname=192.168.33.1 addr=192.168.33.1 terminal=ssh res=failed
+
+
+ssh-rsa failed
+ssh-rsa-cert-v01@openssh.com ].9S9b>8#}PWTIMn})pwrR[m\HZzXXsv3l]8&ciw
+F;@%3f
+HI_mJlxo&'-/n 'B1Or0=?aa
+3ZEgw7pLl4]j3kVanXRA'W[gA%|o@T]&bjpuser_rootrootXDZcssh-rsa=g5P(Xbi0QS%`*N)'WbSJXuN`6/zoei[LX/_jG`[I, \}|H/UTT64s!4KBUGZ;8XxE7a"IIR_yGp{m_]`vvVf[ I7U&dp)i!ssh-rsa7mXV*x@7x7
+;Q<WtMOJoyx4 FDI.4BF:)1,Q,6o0+L7?X |A~Ayu.qO\;K(KBvN+0a1:e`9WebA"&$#!W(^ m(AL
+93496 17:34:19.283061261 0 kind_cori (7fbaabcc7650) sshd (2257:24) < sendto res=128 data=
+Uop=PAM:bad_ident acct="?" exe="/usr/sbin/sshd" hostname=192.168.33.1 addr=192.168.33.1 terminal=ssh res=failed
+
+

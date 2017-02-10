@@ -8,7 +8,7 @@
     name: local_registry
     image: registry
     state: started
-    pull: true
+    #pull: true
     ports:
     - "5000:5000"
     detach: true
@@ -50,11 +50,24 @@
    path: "/var/tmp/image"
    repository: "localhost:5000/ssh"
    name: ssh
-   force: yes
+   #force: yes
    push: yes
    buildargs:
      PASSWORD_GENERATED: "{{random_password.stdout}}"
   tags: 'sinkers::docker:build'
+
+- name: Force build image and with buildargs
+  docker_image:
+   path: "/var/tmp/image"
+   repository: "localhost:5000/ssh"
+   name: ssh
+   force: yes
+   push: yes
+   buildargs:
+     PASSWORD_GENERATED: "{{random_password.stdout}}"
+  when: docker_rebuild_force | default("false") | match("true")
+  tags: 'sinkers::docker:build'
+
 
 - name: generate a random hostname from dicts
   shell: "sort -R /usr/share/dict/words | head -1 "
