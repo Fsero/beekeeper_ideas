@@ -1,8 +1,10 @@
 sinker:
 
- - registry needs to be launched at startup time.
- - potted docker needs to be launched at startup time.
+ - registry needs to be launched at startup time. #DONE moved from ansible docker to docker-compose.
+ - potted docker needs to be launched at startup time. #DONE
+ - limit capabilities #TO BE IMPROVED, ssh needs a lot of capabilities
  - rate limit in potted docker.
+ - detect potted container compromised.
  - clean/reset potted container when compromised, rebuild image with new random password.
  - improve potted container, add wget/curl/nano/vim to enable bad guys to misbehave
  - edit falco rules to just listen container events.
@@ -13,6 +15,11 @@ collector:
  - ingest from syslog/files to elasticsearch.
  - retrieve scap from probes, rotates them.
  - process scap to get ssh password.
+
+API:
+
+
+Client:
 
 
 sysdig filter

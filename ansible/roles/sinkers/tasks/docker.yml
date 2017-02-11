@@ -1,95 +1,40 @@
 - name: 'installing docker-py'
-  pip: name=docker-py state=latest
+  pip: name=docker state=latest
   become: true
-  tags: 'sinkers::docker:build'
+  tags: 'sinkers::docker'
 
-- name: launch local docker registry
-  docker_container:
-    name: local_registry
-    image: registry
-    state: started
-    #pull: true
-    ports:
-    - "5000:5000"
-    detach: true
-  tags:
-    - 'sinkers::docker:run'
-    - 'sinkers::docker:build'
+- name: 'installing docker-compose'
+  pip: name=docker-compose state=latest
+  become: true
+  tags: 'sinkers::docker'
 
-- name: creates Docker build image
+- name: 'create Docker image directory'
   file:
-    path: /var/tmp/image
+    path: "{{ container_directory }}"
     state: directory
-    owner: root
-    group: root
-    mode: 0775
-    recurse: yes
-  tags: 'sinkers::docker:build'
+    mode: 0755
+  tags: 'sinkers::docker'
 
-- name: 'copying Dockerfile into build dir'
+- name: 'setting up containers as a service'
   copy:
-    src: "Dockerfile"
-    dest: /var/tmp/image/Dockerfile
-    owner: root
-    group: root
-    mode: 0644
-  tags: 'sinkers::docker:build'
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: "{{ item.mode }}"
+  with_items: "{{container_files}}"
+  tags: 'sinkers::docker'
 
-
-- name: generate a random password from dicts
-  shell: "sort -R /usr/share/dict/words | head -1"
-  register: random_password
-  tags: 'sinkers::docker:build'
-
-- name: Reclaim unused docker images space
-  command: "docker system prune -f"
-  tags: 'sinkers::docker:build'
-
-- name: Build image and with buildargs
-  docker_image:
-   path: "/var/tmp/image"
-   repository: "localhost:5000/ssh"
-   name: ssh
-   #force: yes
-   push: yes
-   buildargs:
-     PASSWORD_GENERATED: "{{random_password.stdout}}"
-  tags: 'sinkers::docker:build'
-
-- name: Force build image and with buildargs
-  docker_image:
-   path: "/var/tmp/image"
-   repository: "localhost:5000/ssh"
-   name: ssh
-   force: yes
-   push: yes
-   buildargs:
-     PASSWORD_GENERATED: "{{random_password.stdout}}"
-  when: docker_rebuild_force | default("false") | match("true")
-  tags: 'sinkers::docker:build'
-
-
-- name: generate a random hostname from dicts
-  shell: "sort -R /usr/share/dict/words | head -1 "
-  register: random_hostname
-  tags: 'sinkers::docker:run'
-
-
-
-
-- name: launch potted containers
-  docker_container:
-    name: local_ssh
-    image: "localhost:5000/ssh"
+- name: 'starting up containerd'
+  systemd:
     state: started
-    pull: true
-    ports:
-    - "22:22"
-    detach: true
-    hostname: "{{random_hostname.stdout}}"
-    privileged: true
-  tags: 'sinkers::docker:run'
+    name: containerd
+    daemon_reload: yes
+    enabled: yes
+  tags: 'sinkers::docker'
 
-
-
+- name: 'reloading containerd service'
+  command: /usr/local/sbin/containerd stop
+  when: docker_rebuild_force | default("false") | match("true")
+  tags: 'sinkers::docker'
 

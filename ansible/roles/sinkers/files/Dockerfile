@@ -8,6 +8,7 @@ RUN apt-get update
 RUN apt-get install -y rsyslog
 RUN apt-get install -y sudo
 RUN apt-get install -y ssh
+RUN apt-get install -y vim curl wget
 RUN export HOSTNAME="$(sort -R /usr/share/dict/words | head -1 | tr -d \' )"
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 CMD /etc/init.d/ssh start && sleep infinity
