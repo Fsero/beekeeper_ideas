@@ -6,8 +6,9 @@ sinker:
  - rate limit in potted docker.
  - detect potted container compromised.
  - clean/reset potted container when compromised, rebuild image with new random password.
- - improve potted container, add wget/curl/nano/vim to enable bad guys to misbehave
- - edit falco rules to just listen container events.
+ - improve potted container, add wget/curl/nano/vim to enable bad guys to misbehave #DONE
+ - edit falco rules to just listen container events. #DONE
+ - logrotate traces to prevent space exhaustion.
  - edit falco rules to set a program that list events and restart the container.
 
 collector:
