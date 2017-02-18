@@ -6,13 +6,16 @@ sysdig_files:
   - { src: '../files/sysdigd', dest: '/usr/local/sbin/sysdigd', mode: '0500' }
   - { src: '../files/sysdigd.service', dest: '/etc/systemd/system/sysdigd.service', mode: '0444' }
 
+falco_files:
+  - { src: '../files/falco.yaml', dest: '/etc/falco.yaml', mode: '0444' }
+  - { src: '../files/falco_container_rules.yaml', dest: '/etc/falco_container_rules.yaml', mode: '0444' }
+
 
 container_directory: "/var/tmp/image"
 
 container_files:
   - { src: '../files/Dockerfile', dest: "{{ container_directory }}/Dockerfile", mode: '0500' }
   - { src: '../files/docker-compose.yml', dest: "{{ container_directory }}/docker-compose.yml", mode: '0500' }
-
   - { src: '../files/containerd', dest: '/usr/local/sbin/containerd', mode: '0500' }
   - { src: '../files/containerd.service', dest: '/etc/systemd/system/containerd.service', mode: '0444' }
 

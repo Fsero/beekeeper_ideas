@@ -1,0 +1,14 @@
+- name: 'installing falco'
+  apt: name=falco state=present
+  tags: 'sinkers::falco'
+
+- name: 'setting up falco and falco rules'
+  copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: "{{ item.mode }}"
+  with_items: "{{falco_files}}"
+  notify: restart falco
+  tags: 'sinkers::falco'

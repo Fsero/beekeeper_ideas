@@ -9,8 +9,6 @@
 - name: 'testing if sysdig works'
   become: yes
   command: sysdig-probe-loader
-- name: 'installing falco'
-  apt: name=falco state=present
 - name: 'setting up sysdig as a service'
   copy:
       src: "{{ item.src }}"
