@@ -21,12 +21,14 @@ do_start() {
     if [ -n "${KPID}" -a -d "/proc/${KPID}" ];then
       logger -t info [$NAME] $NAME already running
     else
+      /usr/local/sbin/tc_manager.sh stop
       docker system prune -f
       cd /var/tmp/image
       export RANDOM_PASSWORD=$(sort -R /usr/share/dict/words | head -1)
       export RANDOM_NAME=$(sort -R /usr/share/dict/words | head -1 | tr -d "'")
       docker-compose up --build &
       echo $! > $PIDFILE
+      /usr/local/sbin/tc_manager.sh start
     fi
 }
 
@@ -37,6 +39,7 @@ do_stop() {
      kill $KPID
      cd /var/tmp/image
      docker-compose stop
+     /usr/local/sbin/tc_manager.sh stop
  fi
 }
 

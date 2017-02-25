@@ -1,14 +1,19 @@
 - name: 'get linux sources'
   apt: name=linux-source state=present
+  tags: 'sinkers::sysdig'
 - name: 'get linux sources'
   apt: name=linux-kernel-headers state=present
+  tags: 'sinkers::sysdig'
 - name: 'updating repo'
   apt: update_cache=yes
+  tags: 'sinkers::sysdig'
 - name: 'installing sysdig'
   apt: name=sysdig state=present
+  tags: 'sinkers::sysdig'
 - name: 'testing if sysdig works'
   become: yes
   command: sysdig-probe-loader
+  tags: 'sinkers::sysdig'
 - name: 'setting up sysdig as a service'
   copy:
       src: "{{ item.src }}"
@@ -16,6 +21,7 @@
       owner: root
       group: root
       mode: "{{ item.mode }}"
+  tags: 'sinkers::sysdig'
   with_items: "{{sysdig_files}}"
 - name: 'starting up sysdig'
   systemd:
@@ -23,3 +29,10 @@
     name: sysdigd
     daemon_reload: yes
     enabled: yes
+  tags: 'sinkers::sysdig'
+- name: 'installing cleanup traces script'
+  cron:
+    name: "cleanup traces to not fill disk"
+    minute: "*/2"
+    job: "/usr/local/sbin/cleanup_traces.sh"
+  tags: 'sinkers::sysdig'
