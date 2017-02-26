@@ -2,7 +2,7 @@
 rules_file: /etc/falco_container_rules.yaml
 
 # Whether to output events in json or text
-json_output: false
+json_output: true
 
 # Send information logs to stderr and/or syslog Note these are *not* security
 # notification logs! These are just Falco lifecycle (and possibly error) logs.
@@ -13,7 +13,7 @@ log_syslog: true
 # separate from the priority field of rules. This refers only to the
 # log level of falco's internal logging. Can be one of "emergency",
 # "alert", "critical", "error", "warning", "notice", "info", "debug".
-log_level: info
+log_level: debug
 
 # A throttling mechanism implemented as a token bucket limits the
 # rate of falco notifications. This throttling is controlled by the following configuration
@@ -51,5 +51,5 @@ stdout_output:
 #         program: logger -t falco-test
 
 program_output:
-  enabled: false
-  program: mail -s "Falco Notification" someone@example.com
+  enabled: true
+  program: "cat - > /var/log/falco_alerts.txt"

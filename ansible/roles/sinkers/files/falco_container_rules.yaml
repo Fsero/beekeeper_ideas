@@ -309,13 +309,6 @@
   output: File opened for read/write by container mounting sensitive directory (user=%user.name command=%proc.cmdline %container.info file=%fd.name)
   priority: WARNING
 
-# Anything run interactively by root
-- rule: root action
-  desc: anything done by root in a shell
-  condition: in_potted_container and evt.type=execve and user.name = root and proc.name != sshd and interactive
-  output: "Interactive root (%user.name %proc.name %evt.dir %evt.type %evt.args %fd.name)"
-  priority: WARNING
-
 - rule: System user interactive
   desc: an attempt to run interactive commands by a system (i.e. non-login) user
   condition: in_potted_container and spawned_process and system_users and interactive

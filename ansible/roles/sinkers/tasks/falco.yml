@@ -12,3 +12,10 @@
   with_items: "{{falco_files}}"
   notify: restart falco
   tags: 'sinkers::falco'
+
+- name: 'starting up falco'
+  systemd:
+    state: started
+    name: falco
+    daemon_reload: yes
+    enabled: yes
