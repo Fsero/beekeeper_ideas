@@ -8,7 +8,9 @@
   apt: update_cache=yes
   tags: 'sinkers::sysdig'
 - name: 'installing sysdig'
-  apt: name=sysdig state=present
+  apt:
+    name: "sysdig=0.14.0"
+    state: "present"
   tags: 'sinkers::sysdig'
 - name: 'testing if sysdig works'
   become: yes

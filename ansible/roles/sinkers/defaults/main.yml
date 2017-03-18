@@ -10,6 +10,8 @@ sysdig_files:
 falco_files:
   - { src: '../files/falco.yaml', dest: '/etc/falco.yaml', mode: '0444' }
   - { src: '../files/falco_container_rules.yaml', dest: '/etc/falco_container_rules.yaml', mode: '0444' }
+  - { src: '../files/falco.service', dest: '/etc/systemd/system/falco.service', mode: '0444' }
+
 
 
 container_directory: "/var/tmp/image"

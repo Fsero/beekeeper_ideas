@@ -4,7 +4,8 @@ sinker:
  - potted docker needs to be launched at startup time. #DONE
  - limit capabilities #TO BE IMPROVED, ssh needs a lot of capabilities
  - rate limit in potted docker.
- - detect potted container compromised.
+ - detect potted container compromised using a golang program that listens alerts from falco.
+
  - clean/reset potted container when compromised, rebuild image with new random password.
  - improve potted container, add wget/curl/nano/vim to enable bad guys to misbehave #DONE
  - edit falco rules to just listen container events. #DONE
@@ -14,6 +15,7 @@ sinker:
 collector:
  - split files over hostnames.
  - ingest from syslog/files to elasticsearch.
+ - use minio as storage solution?
  - retrieve scap from probes, rotates them.
  - process scap to get ssh password.
 

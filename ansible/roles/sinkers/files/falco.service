@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch falco at startup
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/falco start
+ExecStop=/etc/init.d/falco stop
+RemainAfterExit=no
+Restart=always
+PIDFile=/var/run/falco.pid
+
+[Install]
+WantedBy=multi-user.target

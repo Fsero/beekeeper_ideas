@@ -5,9 +5,9 @@ import (
 	//"os"
 	//"fmt"
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
-	"fmt"
 )
 
 //{"output":"17:20:45.212076717: Alert Shell spawned in a container other than entrypoint)",
@@ -33,7 +33,5 @@ func main() {
 	fmt.Printf("%+v\n", f)
 	fmt.Printf("\n")
 	fmt.Printf(f.Time.String())
-
-
 
 }

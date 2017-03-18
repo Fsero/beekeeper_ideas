@@ -104,147 +104,73 @@ rsyslog_rsyslog_d_files:
                   StreamDriver.authmode="x509/name"
                    PermittedPeer="*.superprivyhosting.com")
             - input(type="imtcp" port="10514" name="tcp-tls")
-#          13-split-files-over-hostname:
-#            validate: true
-#            settings:
-#            $ModLoad imuxsock.so
-#            $ModLoad imklog.so
-#            $ActionFileDefaultTemplate      RSYSLOG_TraditionalFileFormat
-#
-#            # Log all kernel messages to the console.
-#            # Logging much else clutters up the screen.
-#            #kern.*                                                 /dev/console
-#
-#            # Log anything (except mail) of level info or higher.
-#            # Don't log private authentication messages!
-#            #*.info;mail.none;authpriv.none;cron.none                /var/log/messages
-#            if \
-#                    $source == 'localhost' \
-#                    and \
-#                           $syslogseverity <= '6' \
-#                    and ( \
-#                                    $syslogfacility-text != 'mail' \
-#                            and \
-#                                    $syslogfacility-text != 'authpriv' \
-#                            and \
-#                                    $syslogfacility-text != 'cron' \
-#                    ) \
-#            then    /var/log/messages
-#
-#            # The authpriv file has restricted access.
-#            #authpriv.*                                              /var/log/secure
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'authpriv' \
-#            then    /var/log/secure
-#
-#            # Log all the mail messages in one place.
-#            #mail.*                                                  -/var/log/maillog
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'mail' \
-#            then    -/var/log/maillog
-#
-#            # Log cron stuff
-#            #cron.*                                                  /var/log/cron
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'cron' \
-#            then    /var/log/cron
-#
-#            # Everybody gets emergency messages
-#            #*.emerg                                                 *
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    $syslogseverity-text == 'emerg' \
-#            then    *
-#
-#            # Save news errors of level crit and higher in a special file.
-#            #uucp,news.crit                                          /var/log/spooler
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    (\
-#                            $syslogfacility-text == 'uucp' \
-#                                    or \
-#                            $syslogfacility-text == 'news' \
-#                    )\
-#                            and \
-#                    $syslogseverity-text == 'crit' \
-#            then    /var/log/spooler
-#
-#            # Save boot messages also to boot.log
-#            #local7.*                                                /var/log/boot.log
-#            if \
-#                    $source == 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'local7' \
-#            then    /var/log/boot.log
-#
-#            # Remote logging
-#            $ModLoad imudp
-#            $UDPServerAddress 0.0.0.0
-#            $UDPServerRun 514
-#
-#            $template DYNmessages,"/var/log/%HOSTNAME%/messages"
-#            $template DYNsecure,"/var/log/%HOSTNAME%/secure"
-#            $template DYNmaillog,"/var/log/%HOSTNAME%/maillog"
-#            $template DYNcron,"/var/log/%HOSTNAME%/cron"
-#            $template DYNspooler,"/var/log/%HOSTNAME%/spooler"
-#            $template DYNboot,"/var/log/%HOSTNAME%/boot.log"
-#
-#            if \
-#                    $source != 'localhost' \
-#                    and \
-#                         $syslogseverity <= '6' \
-#                    and ( \
-#                                    $syslogfacility-text != 'mail' \
-#                            and \
-#                                    $syslogfacility-text != 'authpriv' \
-#                            and \
-#                                    $syslogfacility-text != 'cron' \
-#                    ) \
-#            then    ?DYNmessages
-#
-#            if \
-#                    $source != 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'authpriv' \
-#            then    ?DYNsecure
-#
-#            if \
-#                    $source != 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'mail' \
-#            then    -?DYNmaillog
-#
-#            if \
-#                    $source != 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'cron' \
-#            then    ?DYNcron
-#
-#            if \
-#                    $source != 'localhost' \
-#                            and \
-#                    (\
-#                            $syslogfacility-text == 'uucp' \
-#                                    or \
-#                            $syslogfacility-text == 'news' \
-#                    )\
-#                            and \
-#                    $syslogseverity-text == 'crit' \
-#            then    ?DYNspooler
-#
-#            if \
-#                    $source != 'localhost' \
-#                            and \
-#                    $syslogfacility-text == 'local7' \
-#            then    ?DYNboot
+
+          13-split-files-over-hostname:
+            validate: true
+            settings:
+              - $ModLoad imuxsock.so
+              - $ModLoad imklog.so
+              - $ActionFileDefaultTemplate      RSYSLOG_TraditionalFileFormat
+              - $template DYNmessages,"/var/log/%HOSTNAME%/messages"
+              - $template DYNsecure,"/var/log/%HOSTNAME%/secure"
+              - $template DYNmaillog,"/var/log/%HOSTNAME%/maillog"
+              - $template DYNcron,"/var/log/%HOSTNAME%/cron"
+              - $template DYNspooler,"/var/log/%HOSTNAME%/spooler"
+              - $template DYNboot,"/var/log/%HOSTNAME%/boot.log"
+              - $template DYNfalco,"/var/log/%HOSTNAME%/falco.log"
+              - if $source != 'localhost' \
+                 and \
+                 $syslogseverity <= '6' \
+                 and ( \
+                   $syslogfacility-text != 'mail' \
+                   and \
+                   $syslogfacility-text != 'authpriv' \
+                   and \
+                   $syslogfacility-text != 'cron' \
+                 ) \
+                 then    ?DYNmessages
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    $syslogfacility-text == 'authpriv' \
+                 then    ?DYNsecure
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    $syslogfacility-text == 'mail' \
+                 then    -?DYNmaillog
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    $syslogfacility-text == 'cron' \
+                 then    ?DYNcron
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    (\
+                      $syslogfacility-text == 'uucp' \
+                      or \
+                      $syslogfacility-text == 'news' \
+                    )\
+                    and \
+                    $syslogseverity-text == 'crit' \
+                 then    ?DYNspooler
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    $syslogfacility-text == 'local7' \
+                 then    ?DYNboot
+
+              - if \
+                    $source != 'localhost' \
+                    and \
+                    $programname == 'falco' \
+                 then ?DYNfalco
 rsyslog_repeated_msg_reduction: true
 rsyslog_file_owner: root
 rsyslog_file_group: adm
