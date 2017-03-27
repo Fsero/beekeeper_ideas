@@ -1,6 +1,22 @@
 - name: 'installing falco'
   apt: name=falco state=present
   tags: 'sinkers::falco'
+  
+- name: 'get container_recycler repo'
+  git:
+      repo: 'git@bitbucket.org:fseros/container_recycler.git'
+      dest: "{{ role_path }}/files/gocode/src/bitbucket.org/fseros/container_recycler"
+      ssh_opts: "-o StrictHostKeyChecking=no"
+      version: 0.0.2
+  become: false
+  delegate_to: 127.0.0.1
+  tags: 'sinkers::falco'
+
+- name: 'compile container_recycler'
+  shell: "export GOPATH={{ role_path }}/files/gocode/; cd $GOPATH/src/bitbucket.org/fseros/container_recycler && make "
+  become: false
+  delegate_to: 127.0.0.1
+  tags: 'sinkers::falco'
 
 - name: 'setting up falco and falco rules'
   copy:
@@ -13,9 +29,12 @@
   notify: restart falco
   tags: 'sinkers::falco'
 
+
 - name: 'starting up falco'
   systemd:
     state: started
     name: falco
     daemon_reload: yes
     enabled: yes
+  tags: 'sinkers::falco'
+

@@ -42,7 +42,7 @@ file_output:
   filename: ./events.txt
 
 stdout_output:
-  enabled: true
+  enabled: false
 
 # Possible additional things you might want to do with program output:
 #   - send to a slack webhook:
@@ -52,4 +52,4 @@ stdout_output:
 
 program_output:
   enabled: true
-  program: "cat - > /var/log/falco_alerts.txt"
+  program: "container_recycler | tee -a /var/log/falco_alerts.txt"

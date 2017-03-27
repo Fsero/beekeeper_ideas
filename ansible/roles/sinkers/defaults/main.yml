@@ -11,13 +11,13 @@ falco_files:
   - { src: '../files/falco.yaml', dest: '/etc/falco.yaml', mode: '0444' }
   - { src: '../files/falco_container_rules.yaml', dest: '/etc/falco_container_rules.yaml', mode: '0444' }
   - { src: '../files/falco.service', dest: '/etc/systemd/system/falco.service', mode: '0444' }
-
-
+  - { src: '../files/gocode/src/bitbucket.org/fseros/container_recycler/bin/container_recycler', dest: '/usr/local/bin/container_recycler', mode: '0500' }
 
 container_directory: "/var/tmp/image"
 
 container_files:
   - { src: '../files/Dockerfile', dest: "{{ container_directory }}/Dockerfile", mode: '0500' }
+  - { src: '../files/Dockerfile-base', dest: "{{ container_directory }}/Dockerfile-base", mode: '0500' }
   - { src: '../files/docker-compose.yml', dest: "{{ container_directory }}/docker-compose.yml", mode: '0500' }
   - { src: '../files/tc_manager.sh', dest: '/usr/local/sbin/tc_manager.sh', mode: '0500' }
   - { src: '../files/containerd', dest: '/usr/local/sbin/containerd', mode: '0500' }
