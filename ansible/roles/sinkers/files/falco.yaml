@@ -52,4 +52,4 @@ stdout_output:
 
 program_output:
   enabled: true
-  program: "container_recycler | tee -a /var/log/falco_alerts.txt"
+  program: "/usr/local/bin/container_recycler | tee -a /var/log/falco_alerts.txt"

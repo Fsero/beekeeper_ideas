@@ -84,17 +84,22 @@ start_traffic_shape(){
 
 get_bridge_docker_device(){
     local _outvar=$1
-    local docker_network_id=$(docker network ls | grep image_ssh | cut -f1 -d' ')
+    local docker_network_name=$2
+    local docker_network_id=$(docker network ls | grep $docker_network_name | cut -f1 -d' ')
     local result=""
     if [[ -z "$docker_network_id" ]]; then
         echo "unable to get bridge id from docker, refusing to continue, maybe it not exists?"
         result="NO_DEV"
+        eval $_outvar=\$result
+	return
     fi
     IFACE="br-$docker_network_id"
     ifconfig $IFACE &> /dev/null
     if [[ $? -ne 0 ]]; then
         echo "unable to contact bridged interface <$IFACE>, refusing to continue"
         result="NO_DEV"
+        eval $_outvar=\$result
+	return
     fi
     result="br-$docker_network_id"
     eval $_outvar=\$result
@@ -102,7 +107,7 @@ get_bridge_docker_device(){
 
 do_start() {
     local iface=""
-    get_bridge_docker_device "iface"
+    get_bridge_docker_device "iface" "$docker_network_name"
     if [[ "$iface" == "NO_DEV" ]]; then
       echo "unable to get interface, refusing to continue"
       exit 1
@@ -113,7 +118,7 @@ do_start() {
 
 do_stop() {
     local iface=""
-    get_bridge_docker_device "iface"
+    get_bridge_docker_device "iface" "$docker_network_name"
     if [[ "$iface" == "NO_DEV" ]]; then
       echo "unable to get interface, maybe it not exists"
       exit 0
@@ -133,20 +138,20 @@ do_status() {
 
 case "$1" in
    start)
-     do_start
+     do_start $2
      ;;
    stop)
-     do_stop
+     do_stop $2
      ;;
    restart)
-     do_stop
-     do_start
+     do_stop $2
+     do_start $2
      ;;
    status)
      do_status
      ;;
    *)
-     echo "Usage: /etc/init.d/$NAME start|stop|restart|stop"
+     echo "Usage: /etc/init.d/$NAME start DOCKER_NETWORK_NAME | stop DOCKER_NETWORK_NAME | status"
      exit 1
      ;;
 esac
