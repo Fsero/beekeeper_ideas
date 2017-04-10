@@ -1,5 +1,0 @@
-- hosts: '!newjoiners'
-  roles:
-     - { role: ansible-rsyslog, become: true }
-  tags: collector
-

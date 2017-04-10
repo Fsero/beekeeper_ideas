@@ -52,3 +52,9 @@
 [submodule "ansible/roles/dev-sec.ssh-hardening"]
 	path = ansible/roles/dev-sec.ssh-hardening
 	url = git@github.com:Fsero/ansible-ssh-hardening.git
+[submodule "ideas/ssh/go-scp"]
+	path = ideas/ssh/go-scp
+	url = https://github.com/kkirsche/go-scp.git
+[submodule "ideas/others/container_recycler"]
+	path = ideas/others/container_recycler
+	url = git@bitbucket.org:fseros/container_recycler.git
