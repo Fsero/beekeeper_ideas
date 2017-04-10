@@ -40,18 +40,6 @@
 [submodule "ideas/audit/falco"]
 	path = ideas/audit/falco
 	url = https://github.com/draios/falco.git
-[submodule "ansible/roles/ansible-rsyslog"]
-	path = ansible/roles/ansible-rsyslog
-	url = git@github.com:Fsero/ansible-rsyslog-1.git
-[submodule "ansible/roles/simple-pki"]
-	path = ansible/roles/simple-pki
-	url = git@github.com:Fsero/ansible-simple-pki.git
-[submodule "ansible/roles/ansible-docker"]
-	path = ansible/roles/ansible-docker
-	url = git@github.com:Fsero/ansible-docker.git
-[submodule "ansible/roles/dev-sec.ssh-hardening"]
-	path = ansible/roles/dev-sec.ssh-hardening
-	url = git@github.com:Fsero/ansible-ssh-hardening.git
 [submodule "ideas/ssh/go-scp"]
 	path = ideas/ssh/go-scp
 	url = https://github.com/kkirsche/go-scp.git
