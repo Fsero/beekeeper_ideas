@@ -46,3 +46,6 @@
 [submodule "ideas/others/container_recycler"]
 	path = ideas/others/container_recycler
 	url = git@bitbucket.org:fseros/container_recycler.git
+[submodule "ansible"]
+	path = ansible
+	url = git@bitbucket.org:fseros/ansible.git
