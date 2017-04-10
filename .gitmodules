@@ -49,3 +49,4 @@
 [submodule "ansible"]
 	path = ansible
 	url = git@bitbucket.org:fseros/ansible.git
+	branch = master
