@@ -39,7 +39,8 @@ Vagrant.configure(2) do |config|
           vb.customize ["modifyvm", :id, "--memory", "8096"]
           vb.customize ["modifyvm", :id, "--cpus", "2"]
       end
-	  main.vm.network "forwarded_port", guest: 39200, host: 9200
+	  main.vm.network "forwarded_port", guest: 5601, host: 35601
+	  main.vm.network "forwarded_port", guest: 9200, host: 39200
           main.vm.box = "kaorimatz/debian-8.3-amd64"
 	  #main.ssh.port = 30009
 	  main.vm.network "private_network", ip: "192.168.33.11"
