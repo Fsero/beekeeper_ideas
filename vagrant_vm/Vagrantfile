@@ -41,6 +41,7 @@ Vagrant.configure(2) do |config|
       end
 	  main.vm.network "forwarded_port", guest: 5601, host: 35601
 	  main.vm.network "forwarded_port", guest: 9200, host: 39200
+	  main.vm.network "forwarded_port", guest: 38080, host: 38080
           main.vm.box = "kaorimatz/debian-8.3-amd64"
 	  #main.ssh.port = 30009
 	  main.vm.network "private_network", ip: "192.168.33.11"
@@ -49,6 +50,7 @@ Vagrant.configure(2) do |config|
       main.ssh.private_key_path = ["/home/fsero/.ssh/id_dsa", "/home/fsero/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
       main.vm.provision "file", source: "/home/fsero/.ssh/id_dsa.pub", destination: "~/.ssh/authorized_keys"
       main.vm.provision "file", source: "/home/fsero/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+  	main.vm.synced_folder "/home/fsero/data/es", "/var/backups/es"
 
 	end
 	config.vm.define "pki" do |pki|
